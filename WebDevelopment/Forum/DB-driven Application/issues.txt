@@ -1,0 +1,6 @@
+verify_credentials
+if (!$stmt->execute([':username' => $username])) {
+The use exists but it does not execute it?!
+
+$query = "INSERT INTO user_roles(user_id, role_id) VALUES(?, ?)";
+Because of above ... it does not work too?!
