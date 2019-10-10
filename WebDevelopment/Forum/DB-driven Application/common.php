@@ -9,7 +9,8 @@ if(!isset($_GET['authId'])) {
 }
 
 $authId = $_GET['authId'];
-$userId = getUserByAuthId($authId);
+$userId = getUserByAuthId($db, $authId);
+
 if ($userId == -1) {
     header('Location: login.php');
     exit;

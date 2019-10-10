@@ -11,12 +11,15 @@ if (isset($_POST['username']) && $_POST['password']) {
 
     include_once 'db/user_queries.php';
 
-    $userID = verify_credentials($db, $username, $password);
-//    var_dump($result);
+    $userId = verify_credentials($db, $username, $password);
 
-    if ($userID != -1) {
-        $authString = isAuthenticationString($db, $userID);
-        header("Location: categories.php?authId=$authString");
+    if ($userId != -1) {
+        $authString = isAuthenticationString($db, $userId);
+        if ($authString) {
+            header("Location: categories.php?authId=$authString");
+        } else{
+            throw new Exception("'Auth string  for new user can\'t be selected or created'");
+        }
     } else {
         $response = 'Invalid username or password';
     }
