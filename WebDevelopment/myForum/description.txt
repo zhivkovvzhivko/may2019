@@ -1,0 +1,17 @@
+1. User Registration - DONE
+2. Authentication
+3. List with categories
+4. List with all questions in category
+5. Creating a new question
+    5.1 title
+    5.2 content
+    5.3 category(pick up from existing categories)
+    5.4 Tags(Multiple select with existing + text field, if we want to enter new tag)
+6. Answer question from list with questions
+    6.1 List with answers for this question
+7. Answer for question
+
+
+Additional:
+8. Likes
+9. Roles + Creating category only from ADMIN
