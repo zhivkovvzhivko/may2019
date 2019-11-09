@@ -1,21 +1,24 @@
 <?php
 
 function getUserByAuthId(PDO $db, string $authId) {
+
     $query = '
         SELECT
             user_id
         FROM
             authentications
         WHERE
-            authId = ?
+            auth_string = ?
     ';
 
     $stmt = $db->prepare($query);
-    $data = $stmt->execute($authId);
 
-      if($data & $data['user_id']) {
-          return (int)$data['user_id'];
-      }
+    $stmt->execute([$authId]);
+    $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if($data & $data['user_id']) {
+        return (int)$data['user_id'];
+    }
 
       return -1;
 }
@@ -32,7 +35,8 @@ function issueAuthenticationString(PDO $db, int $user_id)
     ';
 
     $stmt = $db->prepare($query);
-    $data = $stmt->execute([$user_id]);
+    $stmt->execute([$user_id]);
+    $data =$stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($data & $data['auth_string']) {
         return $data['auth_string'];

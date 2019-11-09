@@ -1,9 +1,10 @@
 <?php
 
-include_once 'db/db_connection.php';
-include_once 'db/user_queries.php';
+require_once 'db/db_connection.php';
+require_once 'db/user_queries.php';
 
 if (isset($_POST['username'], $_POST['password'])) {
+
     $username = $_POST['username'];
     $password = $_POST['password'];
 

@@ -3,7 +3,7 @@
 include_once 'db/db_connection.php';
 include_once 'db/user_queries.php';
 
-if (!isset($_GET['AuthId'])) {
+if (!isset($_GET['authId'])) {
     header('Location: login.php');
 }
 
