@@ -16,7 +16,8 @@ function getUserByAuthId(PDO $db, string $authId) {
     $stmt->execute([$authId]);
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if($data & $data['user_id']) {
+    if($data & isset($data['user_id'])) {
+
         return (int)$data['user_id'];
     }
 
