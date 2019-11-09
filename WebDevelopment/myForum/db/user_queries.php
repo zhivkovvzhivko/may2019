@@ -1,5 +1,81 @@
 <?php
 
+function getUserByAuthId(PDO $db, string $authId) {
+    $query = '
+        SELECT
+            user_id
+        FROM
+            authentications
+        WHERE
+            authId = ?
+    ';
+
+    $stmt = $db->prepare($query);
+    $data = $stmt->execute($authId);
+
+      if($data & $data['user_id']) {
+          return (int)$data['user_id'];
+      }
+
+      return -1;
+}
+
+function issueAuthenticationString(PDO $db, int $user_id)
+{
+    $query = '
+        SELECT
+            auth_string
+        FROM
+            authentications
+        WHERE
+            user_id = ?
+    ';
+
+    $stmt = $db->prepare($query);
+    $data = $stmt->execute([$user_id]);
+
+    if ($data & $data['auth_string']) {
+        return $data['auth_string'];
+    }
+
+    $authString = uniqid();
+
+    $query = 'INSERT INTO authentications (auth_string, user_id) VALUES (?, ?)';
+    $stmt = $db->prepare($query);
+    $stmt->execute([$authString, $user_id]);
+
+    return $authString;
+}
+
+function verify_credentials(PDO $db, string $username, string $password) : int
+{
+    $query = '
+        SELECT
+            id,
+            password
+        FROM
+            users
+        WHERE
+            username = ?
+    ';
+
+    $stmt = $db->prepare($query);
+    if (!$stmt->execute([$username])) {
+        return -1;
+    }
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $password_hash = $user['password'];
+
+    $result = password_verify($password, $password_hash);
+
+    if($result) {
+        return (int)$user['id'];
+    }
+
+    return -1;
+}
+
 function register(PDO $db, string $username, string $password) : bool
 {
 

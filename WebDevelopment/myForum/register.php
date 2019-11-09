@@ -2,7 +2,6 @@
 
 include_once 'db/db_connection.php';
 include 'db/user_queries.php';
-include_once 'templates/register_form.php';
 
 $response = '';
 if (isset($_POST['username'], $_POST['password'])) {
@@ -18,3 +17,5 @@ if (isset($_POST['username'], $_POST['password'])) {
         echo 'Error!';
     }
 }
+
+include_once 'templates/register_form.php';
