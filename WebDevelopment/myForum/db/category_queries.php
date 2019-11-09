@@ -1,5 +1,46 @@
 <?php
 
+function getQuestionByCategoryId(PDO $db, int $category_id) : array
+{
+    $query = '
+        SELECT
+            q.id,
+            q.title,
+            q.body,
+            q.author_id,
+            q.created_on,
+            u.username,
+            c.name,
+            COUNT(a.id) AS answers_count
+        FROM
+            questions AS q
+        INNER JOIN 
+            categories AS c ON q.category_id = c.id
+        INNER JOIN 
+            users AS u ON q.author_id = u.id
+        LEFT JOIN 
+            answers AS a ON q.id = a.question_id
+        WHERE
+            c.id = ?
+        GROUP BY
+            q.id,
+            q.title,
+            q.body,
+            q.author_id,
+            q.created_on,
+            u.username,
+            c.name
+        ORDER BY 
+            q.created_on DESC,
+            answers_count DESC
+    ';
+
+    $stmt =  $db->prepare($query);
+    $stmt->execute([$category_id]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function getAllCategories(PDO $db) : array
 {
     $query = '

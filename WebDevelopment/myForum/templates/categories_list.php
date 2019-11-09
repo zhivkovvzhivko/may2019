@@ -7,21 +7,23 @@
         <table border="1">
             <thead>
                 <tr>
-                    <td>Name</td>
-                    <td>Question count</td>
+                    <th>Name</th>
+                    <th>Question count</th>
                 </tr>
             </thead>
             <tbody>
             <?php foreach ($categories as $category) : ?>
             <tr>
-                <td><?= $category['name']; ?></td>
+                <td>
+                    <a href="<?= url("category.php?id={$category['id']}") ?>"><?= $category['name']; ?></a>
+                </td>
                 <td><?= $category['questions_count']; ?></td>
             </tr>            
             <?php endforeach; ?>
             </tbody>
         </table>
+        <div id="response" style="color: red">
+            <?= $response ?? null ?>
+        </div>
     </body>
-    <div id="response" style="color: red">
-        <?= $response ?? null ?>
-    </div>
 </html>

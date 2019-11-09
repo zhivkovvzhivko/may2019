@@ -17,3 +17,7 @@ if ($userId == -1) {
     exit;
 }
 
+function url(string $url) {
+    $symbol = strstr($url, '?') ? '&' : '?';
+    return $url . "{$symbol}authId=" . $_GET['authId'];
+}
