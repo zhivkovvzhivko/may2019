@@ -14,8 +14,6 @@ require_once 'db/answer_queries.php';
 
 $questions = getQuestionById($db, $id);
 $answers = getAnswersByQuestionsId($db, $id);
-//echo '<pre/>'; print_r($answers); exit(' tuk sam ');
-//$answers = [];
 
 if(isset($_POST['answer'])) {
     $body = $_POST['body'];

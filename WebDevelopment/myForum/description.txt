@@ -1,15 +1,15 @@
 1. User Registration - Done
 2. Authentication - Done
-3. List with categories
-4. List with all questions in category
-5. Creating a new question
+3. List with categories - DONE
+4. List with all questions in category - DONE
+5. Creating a new question - DONE
     5.1 title
     5.2 content
     5.3 category(pick up from existing categories)
     5.4 Tags(Multiple select with existing + text field, if we want to enter new tag)
-6. Answer question from list with questions
-    6.1 List with answers for this question
-7. Answer for question
+6. Answer to question from list with questions - DONE
+    6.1 List with answers for this question - DONE
+7. Answer to question - DONE
 
 
 Additional:

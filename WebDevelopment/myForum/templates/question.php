@@ -3,17 +3,20 @@
         <title>Question</title>
     </head>
     <body>
+        <a href="<?= url("category.php?id={$questions['category_id']}") ?>">Back to question in this category</a>
+        <br/>
+        <br/>
         <div class="question">
             <span>
-                Title: <?= $questions['title'] ?>
+                Title: <?= htmlspecialchars($questions['title']) ?>
             </span>
             <br/>
             <br/>
-            <span><?= $questions['body'] ?></span>
+            <span><?= htmlspecialchars($questions['body']) ?></span>
             <br/>
             <br/>
             Ask by:
-            <span><?= $questions['author_name'] ?> |</span>
+            <span><?= htmlspecialchars($questions['author_name']) ?> |</span>
             <span><?= $questions['created_on'] ?> |</span>
             <span><?= $questions['category_name'] ?> |</span>
         </div>

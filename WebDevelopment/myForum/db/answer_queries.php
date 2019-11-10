@@ -2,7 +2,6 @@
 
 function answer(PDO $db, int $questionId, int $userId, string $body)
 {
-//    echo '<pre/>'; print_r([$db, $questionId, $userId, $body]); exit('in answer');
     $query = '
         INSERT INTO answers( 
             body, 
@@ -34,6 +33,9 @@ function getAnswersByQuestionsId(PDO $db, $questionId)
             u.id =  a.author_id
         WHERE
             a.question_id = ?
+        ORDER BY 
+            a.created_on DESC,
+            a.id
     ';
 
     $stmt = $db->prepare($query);

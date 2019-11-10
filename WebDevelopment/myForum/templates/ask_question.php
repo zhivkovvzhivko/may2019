@@ -2,9 +2,12 @@
     <head>
         <title>Ask Questions</title>
     </head>
-    <h1>Ask question</h1>
 
     <body>
+        <h1>Ask question</h1>
+        <a href="<?= url("category.php?id={$_GET['id']}") ?>">Back to question in this category</a>
+        <br/>
+        <br/>
         <form method="post">
             Title: <input type="text" name="title"/><br/>
             Question: <br/>
