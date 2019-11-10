@@ -3,6 +3,7 @@
         <title>Questions</title>
     </head>
     <body>
+    <?php include_once 'logged_in_header.php' ?>
 
     <a href="<?= url("categories.php") ?>">Back to categories</a> |
     <a href="<?= url("ask_question.php?id={$id}") ?>">Add new question</a>

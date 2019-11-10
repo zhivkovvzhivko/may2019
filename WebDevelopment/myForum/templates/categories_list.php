@@ -4,7 +4,9 @@
     </head>
     <h1>Categories list</h1>
     <body>
-        <table border="1">
+    <?php include_once 'logged_in_header.php' ?>
+
+    <table border="1">
             <thead>
                 <tr>
                     <th>Name</th>

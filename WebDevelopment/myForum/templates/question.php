@@ -3,6 +3,8 @@
         <title>Question</title>
     </head>
     <body>
+        <?php include_once 'logged_in_header.php' ?>
+
         <a href="<?= url("category.php?id={$questions['category_id']}") ?>">Back to question in this category</a>
         <br/>
         <br/>

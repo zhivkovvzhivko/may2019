@@ -4,6 +4,8 @@
     </head>
 
     <body>
+    <?php include_once 'logged_in_header.php' ?>
+
         <h1>Ask question</h1>
         <a href="<?= url("category.php?id={$_GET['id']}") ?>">Back to question in this category</a>
         <br/>
