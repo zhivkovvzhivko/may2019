@@ -6,11 +6,10 @@ function getQuestionByCategoryId(PDO $db, int $category_id) : array
         SELECT
             q.id,
             q.title,
-            q.body,
             q.author_id,
             q.created_on,
-            u.username,
-            c.name,
+            u.username AS author_name,
+            c.name AS category_name,
             COUNT(a.id) AS answers_count
         FROM
             questions AS q

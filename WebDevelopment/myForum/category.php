@@ -11,6 +11,5 @@ $id = $_GET['id'];
 
 require_once 'db/category_queries.php';
 
-var_dump(getQuestionByCategoryId($db, $id));
-
+$questions = getQuestionByCategoryId($db, $id);
 require_once 'templates/questions_by_category.php';

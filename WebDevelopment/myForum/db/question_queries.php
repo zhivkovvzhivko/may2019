@@ -39,3 +39,34 @@ function createQuestion(
 
     return (int)$questionId;
 }
+
+function getQuestionById(PDO $db, int $id) : array
+{
+    $query = '
+        SELECT
+            q.id,
+            q.title,
+            q.body,
+            q.author_id,
+            q.created_on,
+            u.username AS author_name,
+            c.name AS category_name
+        FROM
+            questions q
+        INNER JOIN
+            users u
+        ON 
+            u.id = q.author_id
+        INNER JOIN
+            categories c 
+        ON 
+            c.id = q.category_id
+        WHERE
+            q.id = ?
+    ';
+
+    $stmt = $db->prepare($query);
+    $stmt->execute([$id]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}

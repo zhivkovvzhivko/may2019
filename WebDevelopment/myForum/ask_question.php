@@ -22,7 +22,12 @@ if (isset($_POST['title'], $_POST['body'])) {
 
     require_once 'db/question_queries.php';
 
-    $result = createQuestion($db, $userId, $title, $body, $category, $existingTags, $newTags);
+    $questionId = createQuestion($db, $userId, $title, $body, $category, $existingTags, $newTags);
+
+    if($questionId) {
+        header('Location: question.php?id='. $questionId);
+        exit;
+    }
     
 }
 
