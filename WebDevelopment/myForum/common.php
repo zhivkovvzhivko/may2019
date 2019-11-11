@@ -21,3 +21,13 @@ function url(string $url) {
     $symbol = strstr($url, '?') ? '&' : '?';
     return $url . "{$symbol}authId=" . $_GET['authId'];
 }
+
+
+//echo '<pre/>'; print_r([
+//]); exit(' eto gi rolite v common');
+
+function hasRole(PDO $db,  int $userId, string $role)
+{
+    $roles = getRolesByUserId($db, $userId);
+    return in_array($role, $roles);
+}

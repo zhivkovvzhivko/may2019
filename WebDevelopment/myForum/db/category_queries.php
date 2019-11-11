@@ -1,5 +1,16 @@
 <?php
 
+function createCategory(PDO $db, string $name) {
+    $query = 'INSERT INTO categories (name) VALUES (?)';
+    $stmt = $db->prepare($query);
+    $stmt->execute([$name]);
+
+//    echo '<pre/>'; print_r([
+//       'name' => $name,
+//       'atm' => $stmt
+//    ]); exit(' CQ');
+}
+
 function getQuestionByCategoryId(PDO $db, int $category_id) : array
 {
     $query = '

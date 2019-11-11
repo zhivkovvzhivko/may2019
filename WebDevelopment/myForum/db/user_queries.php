@@ -6,6 +6,29 @@ function logout(PDO $db, string $authId) {
     $stmt->execute([$authId]);
 }
 
+function getRolesByUserId(PDO $db, int $userId) {
+    $query = '
+        SELECT 
+               r.name 
+        FROM 
+             users_roles AS ur
+        INNER JOIN
+            roles AS r
+        ON
+            r.id = ur.role_id
+        WHERE 
+              ur.user_id = ?
+    ';
+
+    $stmt = $db->prepare($query);
+    $stmt->execute([$userId]);
+    $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return array_map(function ($role) {
+        return $role['name'];
+    }, $roles);
+}
+
 function getUserByAuthId(PDO $db, string $authId) {
 
     $query = '
@@ -107,28 +130,15 @@ function register(PDO $db, string $username, string $password) : bool
     }
 
     foreach($roles as $roleName) {
-        echo "rolqta: $roleName <br/>";
 
         $query = 'SELECT id FROM roles WHERE name = ?';
         $stmt = $db->prepare($query);
         $stmt->execute([$roleName]);
         $roleId = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
 
-        echo '<pre/>'; print_r([
-            'userId' => $userId,
-            'roleId' => $roleId,
-           'result' => $result
-        ]);
-
         $query = 'INSERT INTO users_roles (user_id, role_id) VALUES (?, ?)';
         $stmt = $db->prepare($query);
         $stmt->execute([$userId, $roleId]);
-//        $obj = $stmt->execute([$userId, $roleId]);
-//
-//        echo 'data: '; print_r([
-//            'obj' => $obj,
-//            'last' => $db->lastInsertId()
-//        ]);
     }
 
     return $result;

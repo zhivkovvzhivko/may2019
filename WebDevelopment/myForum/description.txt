@@ -14,4 +14,4 @@
 
 Additional:
 8. Likes
-9. Roles + Creating category only from ADMIN - (ROLES - DONE)
+9. Roles + Creating category only from ADMIN - DONE
