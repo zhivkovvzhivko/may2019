@@ -10,7 +10,7 @@ if (isset($_POST['username'], $_POST['password'])) {
     $password = $_POST['password'];
 
     $result = register($db, $username, $password);
-
+exit("the result: $result");
     if($result) {
         header('Location: login.php');
     } else {

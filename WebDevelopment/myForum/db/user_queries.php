@@ -97,6 +97,39 @@ function register(PDO $db, string $username, string $password) : bool
         $username,
         password_hash($password, PASSWORD_ARGON2I)
     ]);
-    
+
+    $userId = $db->lastInsertId();
+
+    $roles = ['USER'];
+
+    if($userId == 1) {
+        $roles[] = 'ADMIN';
+    }
+
+    foreach($roles as $roleName) {
+        echo "rolqta: $roleName <br/>";
+
+        $query = 'SELECT id FROM roles WHERE name = ?';
+        $stmt = $db->prepare($query);
+        $stmt->execute([$roleName]);
+        $roleId = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
+
+        echo '<pre/>'; print_r([
+            'userId' => $userId,
+            'roleId' => $roleId,
+           'result' => $result
+        ]);
+
+        $query = 'INSERT INTO users_roles (user_id, role_id) VALUES (?, ?)';
+        $stmt = $db->prepare($query);
+        $stmt->execute([$userId, $roleId]);
+//        $obj = $stmt->execute([$userId, $roleId]);
+//
+//        echo 'data: '; print_r([
+//            'obj' => $obj,
+//            'last' => $db->lastInsertId()
+//        ]);
+    }
+
     return $result;
 }
