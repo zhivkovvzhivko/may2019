@@ -22,10 +22,13 @@
             <span><?= $question['created_on'] ?></span>
             <span><?= $question['category_name'] ?></span>
         </div>
-        <?php endforeach; ?>
-
-        <div id="response" style="color: red">
-            <?= $response ?? null ?>
+        <div>
+            <?php if (hasLiked($db, $userId, $question['id'])): ?>
+                <a href="<?= url('category.php?id='. $_GET['id'].'&action=removeLike&question_id='. $question['id']) ?>">Remove like</a>
+            <?php else: ?>
+                <a href="<?= url('category.php?id='. $_GET['id'].'&action=like&question_id='. $question['id']) ?>">Like</a>
+            <?php endif; ?>
         </div>
+    <?php endforeach; ?>
     </body>
 </html>

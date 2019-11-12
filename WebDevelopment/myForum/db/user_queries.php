@@ -1,5 +1,28 @@
 <?php
 
+function hasLiked(PDO $db, $userId, $questionId) : bool
+{
+    $query = 'SELECT * FROM user_likes WHERE user_id = ? AND question_id = ?';
+    $stmt = $db->prepare($query);
+    $stmt->execute([$userId, $questionId]);
+
+    return !empty($stmt->fetch(PDO::FETCH_ASSOC));
+}
+
+function removeLike(PDO $db, int $userId, int $questionId)
+{
+    $query = 'DELETE FROM user_likes WHERE user_id =? AND question_id = ?';
+    $stmt = $db->prepare($query);
+    $stmt->execute([$userId, $questionId]);
+}
+
+function like(PDO $db, int $userId, int $questionId)
+{
+    $query = 'INSERT INTO user_likes (user_id, question_id) VALUES (?, ?)';
+    $stmt = $db->prepare($query);
+    $stmt->execute([$userId, $questionId]);
+}
+
 function logout(PDO $db, string $authId) {
     $query = 'DELETE FROM authentications WHERE auth_string = ?';
     $stmt = $db->prepare($query);
