@@ -32,6 +32,16 @@ class UserRepository implements UserRepositoryInterface
             ->fetch()
             ->current();
 
-        return new UserDTO($user['username'], $user['password'], '');
+        return new UserDTO($user['id'], $user['username'], $user['password'], '');
+    }
+
+    public function getById($id): UserDTO
+    {
+        $user = $this->db->query("SELECT * FROM users WHERE id = ?")
+            ->execute([$id])
+            ->fetch()
+            ->current();
+
+        return new UserDTO($user['id'], $user['username'], $user['password'], '');
     }
 }

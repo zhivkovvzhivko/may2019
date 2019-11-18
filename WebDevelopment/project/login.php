@@ -1,19 +1,26 @@
 <?php
 
-require_once 'index.php';
+require_once 'common.php';
 
-$username = readline();
-$password = readline();
+$error = '';
+if (isset($_POST['login'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-$userService = new Services\Users\UserService(
-    new Repositories\Users\UserRepository(
-        $db
-    ),
-    new \Services\Encryption\ArgonEncryptionService()
-);
+    $userService = new Services\Users\UserService(
+        new Repositories\Users\UserRepository(
+            $db
+        ),
+        new \Services\Encryption\ArgonEncryptionService()
+    );
 
-if ($userService->verifyCredentials($username, $password)) {
-    echo 'You are logged in the system';
-} else {
-    echo 'Username or password missmatch';
+    if ($userService->verifyCredentials($username, $password)) {
+        $user = $userService->findByUsername($username);
+        $_SESSION['id'] = $user->getId();
+        header('Location: profile.php');
+    } else {
+        $error =  'Invalid username or password';
+    }
 }
+
+require_once 'views/users/login.php';

@@ -3,6 +3,7 @@
 namespace Services\Users;
 
 use Data\Users\UserDTO;
+use Exception\User\RegistrationException;
 use Repositories\Users\UserRepositoryInterface;
 use Services\Encryption\EncryptionServiceInterface;
 
@@ -27,11 +28,11 @@ class UserService implements UserServiceInterface
     public function register(UserDTO $userDTO)
     {
         if ($userDTO->getPassword() != $userDTO->getConfirmPassword()) {
-            throw new \Exception('Password missmatch');
+            throw new RegistrationException('Password missmatch');
         }
 
         if (strlen($userDTO->getUsername()) < self::MIN_UESR_LENGTH) {
-            throw new \Exception('User length too short');
+            throw new RegistrationException('User length too short');
         }
 
         $password_hash = $this->encryptionService->hash($userDTO->getPassword());
@@ -45,5 +46,15 @@ class UserService implements UserServiceInterface
         $user = $this->userRepository->getByUsername($username);
 
         return $this->encryptionService->verify($password, $user->getPassword());
+    }
+
+    public function findByUsername(string $username): UserDTO
+    {
+        return $this->userRepository->getByUsername($username);
+    }
+
+    public function findOne(int $id): UserDTO
+    {
+        return $this->userRepository->getById($id);
     }
 }

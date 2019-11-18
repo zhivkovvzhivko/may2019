@@ -4,6 +4,8 @@ namespace Data\Users;
 
 class UserDTO
 {
+    private $id;
+
     private $username;
 
     private $password;
@@ -12,15 +14,33 @@ class UserDTO
 
     /**
      * UserDTO constructor.
+     * @param $id
      * @param $username
      * @param $password
      * @param $confirmPassword
      */
-    public function __construct($username, $password, $confirmPassword)
+    public function __construct($id, $username, $password, $confirmPassword)
     {
+        $this->id = $id;
         $this->username = $username;
         $this->password = $password;
         $this->confirmPassword = $confirmPassword;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     /**
