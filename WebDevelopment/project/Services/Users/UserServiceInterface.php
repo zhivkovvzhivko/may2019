@@ -12,4 +12,6 @@ interface UserServiceInterface
      * @return mixed
      */
     public function register(UserDTO $userDTO);
+
+    public function verifyCredentials(string $username, string $password): bool;
 }

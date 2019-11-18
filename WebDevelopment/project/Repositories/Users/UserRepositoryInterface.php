@@ -14,4 +14,6 @@ interface UserRepositoryInterface
      * @return mixed
      */
     public function register(UserDTO $userDTO);
+
+    public function getByUsername(string $username): UserDTO;
 }

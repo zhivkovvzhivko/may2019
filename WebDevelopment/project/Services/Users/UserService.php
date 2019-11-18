@@ -4,6 +4,7 @@ namespace Services\Users;
 
 use Data\Users\UserDTO;
 use Repositories\Users\UserRepositoryInterface;
+use Services\Encryption\EncryptionServiceInterface;
 
 class UserService implements UserServiceInterface
 {
@@ -12,10 +13,15 @@ class UserService implements UserServiceInterface
      * @var UserRepositoryInterface
      */
     private $userRepository;
+    /**
+     * @var EncryptionServiceInterface
+     */
+    private $encryptionService;
 
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserRepositoryInterface $userRepository, EncryptionServiceInterface $encryptionService)
     {
         $this->userRepository = $userRepository;
+        $this->encryptionService = $encryptionService;
     }
 
     public function register(UserDTO $userDTO)
@@ -28,9 +34,16 @@ class UserService implements UserServiceInterface
             throw new \Exception('User length too short');
         }
 
-        $password_hash = password_hash($userDTO->getPassword(), PASSWORD_ARGON2I);
+        $password_hash = $this->encryptionService->hash($userDTO->getPassword());
         $userDTO->setPassword($password_hash);
 
         $this->userRepository->register($userDTO);
+    }
+
+    public function verifyCredentials(string $username, string $password): bool
+    {
+        $user = $this->userRepository->getByUsername($username);
+
+        return $this->encryptionService->verify($password, $user->getPassword());
     }
 }
