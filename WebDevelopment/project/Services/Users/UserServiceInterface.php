@@ -28,4 +28,6 @@ interface UserServiceInterface
     public function findByUsername(string $username): UserDTO;
 
     public function findOne(int $id): UserDTO;
+
+    public function setProfilePicture(int $id, string $tempName, string $type, int $size);
 }

@@ -12,19 +12,23 @@ class UserDTO
 
     private $confirmPassword;
 
+    private $profilePictureUrl;
+
     /**
      * UserDTO constructor.
      * @param $id
      * @param $username
      * @param $password
      * @param $confirmPassword
+     * @param $profilePictureUrl
      */
-    public function __construct($id, $username, $password, $confirmPassword)
+    public function __construct($id, $username, $password, $confirmPassword, $profilePictureUrl = null)
     {
         $this->id = $id;
         $this->username = $username;
         $this->password = $password;
         $this->confirmPassword = $confirmPassword;
+        $this->profilePictureUrl = $profilePictureUrl;
     }
 
     /**
@@ -89,5 +93,21 @@ class UserDTO
     public function setConfirmPassword($confirmPassword): void
     {
         $this->confirmPassword = $confirmPassword;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProfilePictureUrl()
+    {
+        return $this->profilePictureUrl;
+    }
+
+    /**
+     * @param mixed $profilePictureUrl
+     */
+    public function setProfilePictureUrl($profilePictureUrl): void
+    {
+        $this->profilePictureUrl = $profilePictureUrl;
     }
 }

@@ -6,12 +6,16 @@ use Data\Users\UserDTO;
 use Data\Users\UserEditDTO;
 use Exception\User\RegistrationException;
 use Exception\User\EditProfileException;
+use Exception\User\UploadException;
 use Repositories\Users\UserRepositoryInterface;
 use Services\Encryption\EncryptionServiceInterface;
 
 class UserService implements UserServiceInterface
 {
     const MIN_UESR_LENGTH = 5;
+    const MAX_ALLOWED_SIZE = 100000;
+    const ALLOWED_IMAGE_PREFIX = 'image/';
+
     /**
      * @var UserRepositoryInterface
      */
@@ -79,5 +83,25 @@ class UserService implements UserServiceInterface
         }
 
         $this->userRepository->edit($id, $userEditDTO, $changePassword);
+    }
+
+    public function setProfilePicture(int $id, string $tempName, string $type, int $size)
+    {
+        if (strpos($type, self::ALLOWED_IMAGE_PREFIX) !== 0 ) {
+            throw new UploadException('Invalid image type');
+        }
+        if ($size >= self::MAX_ALLOWED_SIZE) {
+            throw new UploadException('Image is too big');
+        }
+
+        $filePath = 'public/images'. uniqid('profile_'). explode('/', $type)[1];
+        if (!move_uploaded_file(
+            $tempName,
+            $filePath
+        )) {
+            throw new UploadException('Error uploading file');
+        }
+
+        $this->userRepository->setPictureUrl($id, $filePath);
     }
 }

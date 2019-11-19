@@ -2,7 +2,23 @@
 
 require_once 'secure_common.php';
 
-$error = '';
+//echo '<pre/>'; print_r($_FILES); exit(' filovete ');
+$errors = [];
+
+if (isset($_FILES['profile_picture'])) {
+    try {
+
+        $userService->setProfilePicture(
+            $id,
+            $_FILES['profile_picture']['tmp_name'],
+            $_FILES['profile_picture']['type'],
+            $_FILES['profile_picture']['size']
+        );
+    } catch (\Exception\User\UploadException $e) {
+        $errors[] = $e->getMessage();
+    }
+}
+
 if (isset($_POST['edit'])) {
     $username = $_POST['username'];
     $oldPassword = $_POST['old_password'];
@@ -12,9 +28,9 @@ if (isset($_POST['edit'])) {
         $userService->edit($id, new \Data\Users\UserEditDTO($id, $username, $oldPassword, $newPassword));
         header('Location: profile.php');
     } catch (\Exception\User\EditProfileException $e) {
-        $error = $e->getMessage();
+        $errors[] = $e->getMessage();
     } catch (Exception $e) {
-        $error = 'Something went wrong';
+        $errors[] = 'Something went wrong';
     }
 }
 
