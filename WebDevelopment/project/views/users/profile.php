@@ -8,5 +8,7 @@
     <h2 style="color:green">
         Welcome, <?= $user->getUsername(); ?>
     </h2>
+
+    <a href="edit_profile.php">Edit your profile</a>
     </body>
 </html>

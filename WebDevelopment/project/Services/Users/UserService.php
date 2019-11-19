@@ -3,7 +3,9 @@
 namespace Services\Users;
 
 use Data\Users\UserDTO;
+use Data\Users\UserEditDTO;
 use Exception\User\RegistrationException;
+use Exception\User\EditProfileException;
 use Repositories\Users\UserRepositoryInterface;
 use Services\Encryption\EncryptionServiceInterface;
 
@@ -56,5 +58,26 @@ class UserService implements UserServiceInterface
     public function findOne(int $id): UserDTO
     {
         return $this->userRepository->getById($id);
+    }
+
+    public function edit(int $id, UserEditDTO $userEditDTO): void
+    {
+        $user = $this->userRepository->getById($id);
+        $changePassword = false;
+
+        if ($userEditDTO->getOldPassword() && $userEditDTO->getNewPassword()) {
+            if (!$this->verifyCredentials($user->getUsername(), $userEditDTO->getOldPassword())) {
+                throw new EditProfileException('Password missmatch');
+            }
+            $changePassword = true;
+        }
+
+        if ($changePassword) {
+            $userEditDTO->setNewPassword(
+                $this->encryptionService->hash($userEditDTO->getNewPassword())
+            );
+        }
+
+        $this->userRepository->edit($id, $userEditDTO, $changePassword);
     }
 }

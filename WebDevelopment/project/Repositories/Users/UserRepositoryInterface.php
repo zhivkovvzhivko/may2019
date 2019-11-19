@@ -3,6 +3,7 @@
 namespace Repositories\Users;
 
 use Data\Users\UserDTO;
+use Data\Users\UserEditDTO;
 
 interface UserRepositoryInterface
 {
@@ -17,5 +18,7 @@ interface UserRepositoryInterface
 
     public function getByUsername(string $username): UserDTO;
 
-    public function getById($id): UserDTO;
+    public function getById(int $id): UserDTO;
+
+    public function edit(int $id, UserEditDTO $userEditDTO, bool $changePassword);
 }
