@@ -15,23 +15,6 @@ class UserDTO
     private $profilePictureUrl;
 
     /**
-     * UserDTO constructor.
-     * @param $id
-     * @param $username
-     * @param $password
-     * @param $confirmPassword
-     * @param $profilePictureUrl
-     */
-    public function __construct($id, $username, $password, $confirmPassword, $profilePictureUrl = null)
-    {
-        $this->id = $id;
-        $this->username = $username;
-        $this->password = $password;
-        $this->confirmPassword = $confirmPassword;
-        $this->profilePictureUrl = $profilePictureUrl;
-    }
-
-    /**
      * @return mixed
      */
     public function getId()

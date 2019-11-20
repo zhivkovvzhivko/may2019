@@ -11,19 +11,9 @@ class DatabaseStatement implements DatabaseStatementInterface
         $this->pdoStmt = $pdoStmt;
     }
 
-    public function execute(array $params = []): DatabaseStatementInterface
+    public function execute(array $params = []): ResultSetInterface
     {
         $this->pdoStmt->execute($params);
-
-        return $this;
-    }
-
-    public function fetch(): \Generator
-    {
-        $row = $this->pdoStmt->fetch(\PDO::FETCH_ASSOC);
-        while (false != $row) {
-            yield $row;
-            $row = $this->pdoStmt->fetch(\PDO::FETCH_ASSOC);
-        }
+        return new PDOResultSet($this->pdoStmt);
     }
 }
