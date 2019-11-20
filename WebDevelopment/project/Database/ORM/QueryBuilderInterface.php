@@ -2,6 +2,7 @@
 
 namespace Database\ORM;
 
+use Database\DatabaseStatementInterface;
 use Database\ResultSetInterface;
 
 interface QueryBuilderInterface
@@ -23,6 +24,10 @@ interface QueryBuilderInterface
     public function min($value): string;
 
     public function max($value): string;
+
+    public function update(string $table, array $values, array $where): DatabaseStatementInterface;
+
+    public function delete(string $table, array $where): DatabaseStatementInterface;
 
     public function build(): ResultSetInterface;
 }

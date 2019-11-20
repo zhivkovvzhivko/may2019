@@ -2,6 +2,7 @@
 
 namespace Database\ORM;
 
+use Database\DatabaseStatementInterface;
 use Database\ORM\QueryBuilderInterface;
 use Database\DatabaseInterface;
 use Database\ResultSetInterface;
@@ -70,7 +71,7 @@ class MySqlQueryBuilder implements QueryBuilderInterface
             $query .= $column .' '. $criterion .', ';
         }
 
-        $this->query .= rtrim(',', $query); // check WHY it works only if you change the arguments places ?!!!
+        $this->query .= rtrim($query, ',');
 
         return $this;
     }
@@ -103,13 +104,56 @@ class MySqlQueryBuilder implements QueryBuilderInterface
         return 'MAX('. $value .')';
     }
 
+    public function insert(string $table, array $values): DatabaseStatementInterface
+    {
+        $query = 'INSERT INTO '
+            .$table. ' ('. implode(', ', array_keys($values)) .')'
+            .' VALUES ('
+            . implode(', ', array_values(
+                array_fill(0, count($values), '?')
+            )) . ')';
+
+        $stmt = $this->db->query($query);
+        $stmt->execute(array_values($values));
+
+        return $stmt;
+    }
+
     public function build(): ResultSetInterface
     {
-        echo '<pre/>';
-        print_r([
-            'query' => $this->query,
-            'params' => $this->params
-        ]);
         return $this->db->query($this->query)->execute($this->params);
+    }
+
+    public function update(string $table, array $values, array $where): DatabaseStatementInterface
+    {
+        $query = 'UPDATE '. $table .' SET ';
+
+        foreach(array_keys($values) as $column) {
+            $query .= $column . ' = ?, ';
+        }
+
+        $query = rtrim($query, ', ');
+        $query .= ' WHERE 1=1 ';
+        foreach(array_keys($where) as $column) {
+            $query .= ' AND '. $column .' = ? ';
+        }
+
+        $stmt = $this->db->query($query);
+        $stmt->execute(array_merge(array_values($values), array_values($where)));
+
+        return $stmt;
+    }
+
+    public function delete(string $table, array $where): DatabaseStatementInterface
+    {
+        $query = 'DELETE FROM '. $table . ' WHERE 1=1 ';
+        foreach(array_keys($where) as $column) {
+            $query .= ' AND '. $column .' = ?';
+        }
+
+        $stmt = $this->db->query($query);
+        $stmt->execute(array_values($where));
+
+        return $stmt;
     }
 }

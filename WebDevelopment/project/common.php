@@ -15,16 +15,28 @@ $db = new PDODatabase($pdo);
 
 
 $builder = new \Database\ORM\MySqlQueryBuilder($db);
-$user = $builder->select()
-    ->from('users')
-    ->where(['username'=> 'pesho'])
-    ->orderBy(['password' => 'ASC'])
-    ->build()
-    ->fetch(\Data\Users\UserDTO::class);
+//$user = $builder->select()
+//    ->from('users')
+//    ->where(['username'=> 'pesho'])
+//    ->orderBy(['password' => 'ASC'])
+//    ->build()
+//    ->fetch(\Data\Users\UserDTO::class);
 
+//$builder->insert(
+//    'users',
+//    ['username' => 'svetlio', 'password' => '123']
+//);
 
-echo 'usera: ','<pre/>'; print_r($user);
+//$builder->update(
+//    'users',
+//    ['password' => 'nova parola'],
+//    ['id' => 73]
+//);
 
-foreach ($user as $prop) {
-    print_r($prop);
-}
+//$builder->delete('users', ['id'=>73]);
+
+//echo 'usera: ','<pre/>'; print_r($user);
+//
+//foreach ($user as $prop) {
+//    print_r($prop);
+//}
