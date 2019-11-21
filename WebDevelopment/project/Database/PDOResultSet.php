@@ -4,16 +4,24 @@ namespace Database;
 
 class PDOResultSet implements ResultSetInterface
 {
-    private $pdoStmt;
+    /*
+     * @var \PDOStatement
+     */
+    private $pdoStatement;
 
     public function __construct(\PDOStatement $pdoStatement)
     {
-        $this->pdoStmt = $pdoStatement;
+        $this->pdoStatement = $pdoStatement;
     }
-    public function fetch($className) : \Generator
+    public function fetchAll($className): \Generator
     {
-        while ($row = $this->pdoStmt->fetchObject($className)) {
+        while ($row = $this->pdoStatement->fetchObject($className)) {
             yield $row;
         }
+    }
+
+    public function fetch($className)
+    {
+        return $this->pdoStatement->fetchObject($className);
     }
 }

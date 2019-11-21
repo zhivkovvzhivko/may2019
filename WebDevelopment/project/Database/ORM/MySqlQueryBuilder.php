@@ -68,7 +68,7 @@ class MySqlQueryBuilder implements QueryBuilderInterface
         $query = ' ORDER BY ';
 
         foreach ($order as $column => $criterion) {
-            $query .= $column .' '. $criterion .', ';
+            $query .= $column .' '. $criterion .',';
         }
 
         $this->query .= rtrim($query, ',');
@@ -121,6 +121,7 @@ class MySqlQueryBuilder implements QueryBuilderInterface
 
     public function build(): ResultSetInterface
     {
+ echo '<pre/>'; print_r($this->query);
         return $this->db->query($this->query)->execute($this->params);
     }
 
