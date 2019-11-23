@@ -25,6 +25,8 @@ interface QueryBuilderInterface
 
     public function max($value): string;
 
+    public function insert(string $table, array $values): DatabaseStatementInterface;
+
     public function update(string $table, array $values, array $where): DatabaseStatementInterface;
 
     public function delete(string $table, array $where): DatabaseStatementInterface;

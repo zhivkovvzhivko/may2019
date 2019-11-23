@@ -6,32 +6,32 @@ use Database\ORM\QueryBuilderInterface;
 
 abstract class AbstractRepository implements RepositoryInterface
 {
-    /*
+    /**
      * @var string
      */
     private $entity;
 
-    /*
+    /**
      * @var string
      */
     private $table;
 
-    /*
+    /**
      * @var string
      */
     private $primaryKey;
 
-    /*
-     * $var RepositoryInterface[]
+    /**
+     * @var RepositoryInterface[]
      */
-    private $relatedPluralRepositories;
+    protected $relatedPluralRepositories;
 
-    /*
-     * $var RepositoryInterface[]
+    /**
+     * @var RepositoryInterface[]
      */
-    private $relatedSingularRepositories;
+    protected $relatedSingularRepositories;
 
-    /*
+    /**
      * @var QueryBuilderInterface
      */
     private $queryBuilder;
@@ -41,8 +41,8 @@ abstract class AbstractRepository implements RepositoryInterface
      * @param string $entity
      * @param string $table
      * @param string $primaryKey
-     * @param RepositoryInterface $relatedPluralRepositories
-     * @param RepositoryInterface $relatedSingularRepositories
+     * @param RepositoryInterface[] $relatedPluralRepositories
+     * @param RepositoryInterface[] $relatedSingularRepositories
      * @param QueryBuilderInterface $queryBuilder
      */
     public function __construct(string $entity, string $table, string $primaryKey, array $relatedPluralRepositories, array $relatedSingularRepositories, QueryBuilderInterface $queryBuilder)
@@ -83,7 +83,6 @@ abstract class AbstractRepository implements RepositoryInterface
         }
 
         $result = $builder->build()->fetchAll($this->entity);
-
         foreach ($result as $entity) {
             yield $this->populateNavigationProperties($entity);
         }
@@ -93,7 +92,7 @@ abstract class AbstractRepository implements RepositoryInterface
     {
         $result = $this->queryBuilder->select()
             ->from($this->table)
-            ->where([$this->primaryKey = $primaryKey])
+            ->where([$this->primaryKey => $primaryKey])
             ->build()
             ->fetch($this->entity);
 
@@ -105,25 +104,23 @@ abstract class AbstractRepository implements RepositoryInterface
      */
     public function populateNavigationProperties($entity)
     {
-
+//            echo '<pre/>'; print_r($entity); exit(' tuk sam 1'); // Check Why $entity out of array is User, inside becomes Question?!!
         foreach ($this->relatedSingularRepositories as $key => $repository) {
-            $setter = 'set' . ucfirst($key); // setQuestion
-            $getter = 'get' . ucfirst($this->primaryKey); // getQuestion
-            $foreignKey = rtrim($this->table, 's') . '_id'; // user_id
-
-            // $questionsRepository->findBy(['user_id' => $user->getId()])
-            $relatedObject = $repository->findBy([$foreignKey => $entity->$getter()]);
-            $relatedObject->current();
-            $entity->$setter($relatedObject); // $user->setQuestions()
+//            echo '<pre/>'; print_r($entity); exit(' tuk sam 1');
+            $setter = 'set' . ucfirst($key); // setQuestion()
+            $getter = 'get' . ucfirst($this->primaryKey); // getId()
+            $relatedObject = $repository->findBy(['id' => $entity->$getter()]);
+            $relatedObject = $relatedObject->current();
+            $entity->$setter($relatedObject); // $user->setAuhtor($relatedObject)
         }
 
         foreach ($this->relatedPluralRepositories as $key => $repository) {
             $setter = 'set' . ucfirst($key); // setQuestions
-            $getter = 'get' . ucfirst($this->primaryKey); // getQuestions
             $foreignKey = rtrim($this->table, 's') . '_id'; // user_id
+            $getter = 'get' . ucfirst($this->primaryKey); // getId()
+
             $relatedObject = $repository->findBy([$foreignKey => $entity->$getter()]);
             $entity->$setter($relatedObject);
-
         }
 
         return $entity;

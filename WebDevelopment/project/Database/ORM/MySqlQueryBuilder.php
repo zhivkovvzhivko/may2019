@@ -37,7 +37,7 @@ class MySqlQueryBuilder implements QueryBuilderInterface
             $query .= implode(', ', $columns);
         }
 
-        $this->query .= $query;
+        $this->query = $query;
 
         return $this;
     }
